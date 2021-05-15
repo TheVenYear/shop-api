@@ -14,7 +14,7 @@ const swagger = {
       url: `${
         config.NODE_ENV === 'development'
           ? `http://localhost:${config.PORT}`
-          : 'some_url'
+          : config.HOST
       }/api`,
     },
   ],
