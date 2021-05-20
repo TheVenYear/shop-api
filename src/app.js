@@ -15,9 +15,9 @@ const app = express();
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swagger));
 
 // Before middlewares
+app.use(cors(corsSettings));
 app.use(express.urlencoded({ limit: '30mb', extended: true }));
 app.use(cookieParser());
-app.use(cors(corsSettings));
 app.use(fileUpload());
 app.use(logger('tiny'));
 app.use(express.json({ limit: '30mb' }));
