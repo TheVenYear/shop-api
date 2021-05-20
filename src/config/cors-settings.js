@@ -1,5 +1,5 @@
 const corsSettings = {
-  origin: 'http://localhost:3000',
+  origin: '*',
   credentials: true,
   preflightContinue: true,
 };
