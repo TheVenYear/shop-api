@@ -39,16 +39,16 @@ const authController = {
         .cookie('refreshToken', refreshToken, {
           path: refreshUrlTo,
           httpOnly: true,
-          sameSite: 'None',
+          sameSite: 'none',
         })
         .cookie('refreshToken', refreshToken, {
           path: logoutUrlTo,
           httpOnly: true,
-          sameSite: 'None',
+          sameSite: 'none',
         })
         .cookie('accessToken', accessToken, {
           httpOnly: true,
-          sameSite: 'None',
+          sameSite: 'none',
         })
         .send({ data: user, errors: [] });
     } catch (error) {
@@ -59,7 +59,7 @@ const authController = {
   logout: async (req, res) => {
     authService.deleteRefresh(req.cookies.refreshToken);
     return res
-      .cookie('accessToken', '', { httpOnly: true, sameSite: 'None' })
+      .cookie('accessToken', '', { httpOnly: true, sameSite: 'none' })
       .send({ data: null, errors: [] });
   },
 
@@ -71,7 +71,7 @@ const authController = {
       const token = authService.createAccess(refreshToken);
       const user = jwt.verify(token, config.ACCESS_SECRET);
       return res
-        .cookie('accessToken', token, { httpOnly: true, sameSite: 'None' })
+        .cookie('accessToken', token, { httpOnly: true, sameSite: 'none' })
         .send({ data: user || null, errors: [] });
     } catch (error) {
       if (error instanceof TokenExpiredError) {
