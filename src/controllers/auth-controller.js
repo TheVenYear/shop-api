@@ -1,5 +1,4 @@
 import jwt, { TokenExpiredError } from 'jsonwebtoken';
-import StatusCodes from 'http-status-codes';
 
 import config from '../config';
 import authService from '../services/auth-service';
@@ -15,7 +14,7 @@ const authController = {
         avatar: req.files?.avatar,
       });
 
-      return res.send({ data: user, errors: [] });
+      return res.send({ data: user, errors: null });
     } catch (error) {
       return next(error);
     }
@@ -53,7 +52,7 @@ const authController = {
           sameSite: 'none',
           secure: true,
         })
-        .send({ data: user, errors: [] });
+        .send({ data: user, errors: null });
     } catch (error) {
       return next(error);
     }
@@ -67,10 +66,10 @@ const authController = {
         sameSite: 'none',
         secure: true,
       })
-      .send({ data: null, errors: [] });
+      .send({ data: null, errors: null });
   },
 
-  refresh: async (req, res) => {
+  refresh: async (req, res, next) => {
     try {
       const refreshToken = await authService.validateRefresh(
         req.cookies.refreshToken
@@ -83,36 +82,31 @@ const authController = {
           sameSite: 'none',
           secure: true,
         })
-        .send({ data: user || null, errors: [] });
+        .send({ data: user || null, errors: null });
     } catch (error) {
       if (error instanceof TokenExpiredError) {
         await RefreshToken.findOneAndDelete({
           value: req.cookies.refreshToken,
         });
       }
-      return res
-        .status(StatusCodes.UNAUTHORIZED)
-        .send({ data: null, errors: [{ global: error.message }] });
+      return next(error);
     }
   },
 
   me: async (req, res) => {
     const user = await User.findOne({ _id: req.user._id });
-    return res.send({ data: user, errors: [] });
+    return res.send({ data: user, errors: null });
   },
 
-  changeProfile: async (req, res) => {
+  changeProfile: async (req, res, next) => {
     try {
       const user = await authService.changeUser(req.user._id, {
         ...req.body,
         avatar: req.files?.avatar,
       });
-      return res.send({ data: user, errors: [] });
+      return res.send({ data: user, errors: null });
     } catch (error) {
-      return res.send({
-        data: null,
-        errors: [{ [error.param || 'global']: error.message }],
-      });
+      return next(error);
     }
   },
 };
