@@ -12,9 +12,8 @@ import corsSettings from './config/cors-settings';
 
 const app = express();
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swagger));
-
 // Before middlewares
+app.options('*', cors(corsSettings));
 app.use(cors(corsSettings));
 app.use(express.urlencoded({ limit: '30mb', extended: true }));
 app.use(cookieParser());
@@ -24,6 +23,7 @@ app.use(express.json({ limit: '30mb' }));
 
 // Routes
 app.use('/api', routes);
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swagger));
 
 // After middlewares
 app.use(errorHandler);
