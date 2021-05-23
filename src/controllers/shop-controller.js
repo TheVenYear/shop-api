@@ -2,10 +2,16 @@ import Product from '../models/product';
 import Comment from '../models/comment';
 import shopService from '../services/shop-service';
 import Rubric from '../models/rubric';
+import { isValidObjectId } from 'mongoose';
 
 const shopController = {
   addProduct: async (req, res, next) => {
-    const product = new Product(req.body);
+    const { rubric, ...body } = req.body;
+    const product = new Product({
+      ...body,
+      rubric: isValidObjectId(rubric) ? rubric : null,
+    });
+    console.log(req.body);
     try {
       await product.save();
       return res.send({ data: product, errors: null });
@@ -39,8 +45,9 @@ const shopController = {
         const product = await Product.findById(req.params.id);
         return res.send({ data: product, errors: null });
       }
+      console.log(req.query.rubricId);
       const products = await Product.find(
-        {},
+        req.query.rubricId ? { rubric: req.query.rubricId } : {},
         'name price shortDescription images'
       );
       return res.send({ data: products, errors: null });

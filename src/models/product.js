@@ -1,4 +1,4 @@
-import { model } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
 const Product = model('Product', {
   name: {
@@ -19,9 +19,16 @@ const Product = model('Product', {
   },
   images: [String],
   rubric: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'Rubric',
     default: null,
   },
+  comments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Comment',
+    },
+  ],
 });
 
 export default Product;

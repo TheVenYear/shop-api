@@ -23,7 +23,7 @@ const shopPath = {
                 name: {
                   type: 'string',
                   required: true,
-                  description: 'название',
+                  description: 'Название',
                 },
                 shortDescription: {
                   type: 'string',
@@ -38,7 +38,11 @@ const shopPath = {
                 price: {
                   type: 'number',
                   required: true,
-                  description: 'цена',
+                  description: 'Цена',
+                },
+                rubric: {
+                  type: 'string',
+                  description: 'Категория',
                 },
               },
             },
@@ -169,10 +173,17 @@ const shopPath = {
       },
     },
   },
-  '/shop/products/': {
+  '/shop/products': {
     get: {
       tags: ['shop'],
       summary: 'Получить продукт(ы)',
+      parameters: [
+        {
+          name: 'rubricId',
+          description: 'id категории',
+          in: 'query',
+        },
+      ],
       responses: {
         200: {
           description: 'Получение продуктов',
