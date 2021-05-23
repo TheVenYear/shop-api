@@ -1,8 +1,9 @@
+import { isValidObjectId } from 'mongoose';
+
 import Product from '../models/product';
 import Comment from '../models/comment';
 import shopService from '../services/shop-service';
 import Rubric from '../models/rubric';
-import { isValidObjectId } from 'mongoose';
 
 const shopController = {
   addProduct: async (req, res, next) => {
