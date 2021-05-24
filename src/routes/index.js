@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import authRouter from './auth-router';
 import shopRouter from './shop-router';
+import mediaRouter from './media-router';
 
 const routes = Router();
 
@@ -13,6 +14,10 @@ const routers = [
   {
     path: '/shop',
     router: shopRouter,
+  },
+  {
+    path: '/media',
+    router: mediaRouter,
   },
 ];
 
