@@ -1,5 +1,13 @@
+const whitelist = ['http://localhost:3000/', 'https://glendi123.github.io/'];
+
 const corsSettings = {
-  origin: 'http://localhost:3000',
+  origin: (origin, callback) => {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Заблокировано политикой CORS'));
+    }
+  },
   credentials: true,
   preflightContinue: true,
 };
