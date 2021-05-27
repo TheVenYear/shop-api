@@ -4,6 +4,8 @@ import Product from '../models/product';
 import Comment from '../models/comment';
 import shopService from '../services/shop-service';
 import Rubric from '../models/rubric';
+import HttpException from '../utils/http-exception';
+import Spec from '../models/spec';
 
 const shopController = {
   addProduct: async (req, res, next) => {
@@ -12,7 +14,6 @@ const shopController = {
       ...body,
       rubric: isValidObjectId(rubric) ? rubric : null,
     });
-    console.log(req.body);
     try {
       await product.save();
       return res.send({ data: product, errors: null });
@@ -63,6 +64,50 @@ const shopController = {
     } catch (error) {
       return next(error);
     }
+  },
+  addSpecs: async (req, res, next) => {
+    let product;
+    const { specs } = req.body;
+    try {
+      product = await Product.findById(req.body.product);
+    } catch {
+      return next(
+        new HttpException({ product: 'Продукт по данному id не найден' })
+      );
+    }
+
+    await Promise.all(
+      specs.map(async (el) => {
+        const spec = new Spec(el);
+        await spec.save();
+        product.specs.push(spec._id);
+      })
+    );
+    await product.save();
+    const response = (
+      await Product.findById(req.body.product).populate({
+        path: 'specs',
+        model: 'Spec',
+        select: 'key value -_id',
+      })
+    ).specs;
+    return res.send({
+      data: response,
+      errors: null,
+    });
+  },
+  getSpecs: async (req, res, next) => {
+    const product = await Product.findById(req.params.product).populate({
+      path: 'specs',
+      model: 'Spec',
+      select: 'key value -_id',
+    });
+    if (!product) {
+      return next(
+        new HttpException({ product: 'Продукт по данному id не найден' })
+      );
+    }
+    return res.send({ data: product.specs, errors: null });
   },
 };
 

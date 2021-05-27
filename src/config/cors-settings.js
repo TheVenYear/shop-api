@@ -1,4 +1,12 @@
-const whitelist = ['http://localhost:3000', 'https://glendi123.github.io'];
+import config from '.';
+
+const whitelist = [
+  'http://localhost:3000',
+  'https://glendi123.github.io',
+  config.NODE_ENV === 'production'
+    ? config.HOST
+    : `http://localhost:8000:${config.PORT}`,
+];
 
 const corsSettings = {
   origin: (origin, callback) => {

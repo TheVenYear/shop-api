@@ -1,57 +1,5 @@
 const shopPath = {
-  '/shop/add-product': {
-    post: {
-      summary: 'Добавить продукт',
-      tags: ['shop'],
-      responses: {
-        200: {
-          description: 'Продукт успешно добавлен',
-        },
-        400: {
-          description: 'Не удалось добавить продукт',
-        },
-        401: {
-          description: 'Не авторизирован',
-        },
-      },
-      requestBody: {
-        content: {
-          'multipart/form-data': {
-            schema: {
-              type: 'object',
-              properties: {
-                name: {
-                  type: 'string',
-                  required: true,
-                  description: 'Название',
-                },
-                shortDescription: {
-                  type: 'string',
-                  required: true,
-                  description: 'Короткое описание',
-                },
-                description: {
-                  type: 'string',
-                  required: true,
-                  description: 'Описание',
-                },
-                price: {
-                  type: 'number',
-                  required: true,
-                  description: 'Цена',
-                },
-                rubric: {
-                  type: 'string',
-                  description: 'Категория',
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-  '/shop/add-comment': {
+  '/shop/comments': {
     post: {
       summary: 'Добавить отзыв',
       tags: ['shop'],
@@ -190,6 +138,133 @@ const shopPath = {
         },
         500: {
           description: 'Внутренняя ошибка сервера',
+        },
+      },
+    },
+    post: {
+      summary: 'Добавить продукт',
+      tags: ['shop'],
+      responses: {
+        200: {
+          description: 'Продукт успешно добавлен',
+        },
+        400: {
+          description: 'Не удалось добавить продукт',
+        },
+        401: {
+          description: 'Не авторизирован',
+        },
+      },
+      requestBody: {
+        content: {
+          'multipart/form-data': {
+            schema: {
+              type: 'object',
+              properties: {
+                name: {
+                  type: 'string',
+                  required: true,
+                  description: 'Название',
+                },
+                shortDescription: {
+                  type: 'string',
+                  required: true,
+                  description: 'Короткое описание',
+                },
+                description: {
+                  type: 'string',
+                  required: true,
+                  description: 'Описание',
+                },
+                price: {
+                  type: 'number',
+                  required: true,
+                  description: 'Цена',
+                },
+                rubric: {
+                  type: 'string',
+                  description: 'Категория',
+                },
+                images: {
+                  type: 'array',
+                  items: {
+                    type: 'string',
+                    format: 'binary',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  '/shop/specs/{product}': {
+    get: {
+      tags: ['shop'],
+      summary: 'Получить категории',
+      parameters: [
+        {
+          name: 'product',
+          description: 'id продукта',
+          in: 'path',
+        },
+      ],
+      responses: {
+        200: {
+          description: 'Получение категорий',
+        },
+        400: {
+          description: 'Продукт не найден',
+        },
+        500: {
+          description: 'Внутренняя ошибка сервера',
+        },
+      },
+    },
+  },
+  '/shop/specs': {
+    post: {
+      summary: 'Добавить характеристику',
+      tags: ['shop'],
+      responses: {
+        200: {
+          description: 'характеристика успешно добавлена',
+        },
+        400: {
+          description: 'Не удалось найти продукт',
+        },
+        401: {
+          description: 'Не авторизирован',
+        },
+      },
+      requestBody: {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                product: {
+                  type: 'string',
+                  required: true,
+                },
+                specs: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      key: {
+                        type: 'string',
+                      },
+                      value: {
+                        type: 'string',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       },
     },

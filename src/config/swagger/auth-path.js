@@ -105,6 +105,55 @@ const authPath = {
       },
     },
   },
+  '/auth/change-profile': {
+    post: {
+      tags: ['auth'],
+      summary: 'Изменение профиля пользователя',
+      responses: {
+        200: {
+          description: 'Пользователь успешно изменён',
+        },
+        400: {
+          description: 'Не валидные поля',
+        },
+        401: {
+          description: 'Не авторизирован',
+        },
+      },
+      requestBody: {
+        content: {
+          'multipart/form-data': {
+            schema: {
+              type: 'object',
+              properties: {
+                email: {
+                  description: 'email пользователя',
+                  type: 'string',
+                },
+                password: {
+                  type: 'string',
+                  description: 'пароль пользователя',
+                },
+                avatar: {
+                  type: 'string',
+                  format: 'binary',
+                  description: 'изображение профиля',
+                },
+                nickname: {
+                  type: 'string',
+                  description: 'ник пользователя',
+                },
+                phone: {
+                  type: 'string',
+                  description: 'телефон пользователя',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   '/auth/refresh': {
     get: {
       tags: ['auth'],
