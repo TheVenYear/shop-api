@@ -16,6 +16,11 @@ shopRouter.post(
   validate(shopValidation.rubric),
   shopController.addRubric
 );
+shopRouter.delete(
+  '/rubrics/:rubric',
+  authenticate(true),
+  shopController.removeRubric
+);
 
 shopRouter.get('/products/:id', shopController.getProducts);
 shopRouter.get('/products', shopController.getProducts);
@@ -24,6 +29,11 @@ shopRouter.post(
   authenticate(true),
   validate(shopValidation.product),
   shopController.addProduct
+);
+shopRouter.delete(
+  '/products/:product',
+  authenticate(true),
+  shopController.removeProduct
 );
 
 shopRouter.get(

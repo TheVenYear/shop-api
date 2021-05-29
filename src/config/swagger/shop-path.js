@@ -100,6 +100,30 @@ const shopPath = {
       },
     },
   },
+  '/shop/rubrics/{rubric}': {
+    delete: {
+      tags: ['shop'],
+      summary: 'Удаление категории',
+      parameters: [
+        {
+          in: 'path',
+          name: 'rubric',
+          description: 'id категории',
+        },
+      ],
+      responses: {
+        200: {
+          description: 'Успешно удалено',
+        },
+        401: {
+          description: 'Не авторизирован',
+        },
+        500: {
+          description: 'Внутренняя ошибка сервера',
+        },
+      },
+    },
+  },
   '/shop/products/{id}': {
     get: {
       tags: ['shop'],
@@ -108,7 +132,7 @@ const shopPath = {
         {
           in: 'path',
           name: 'id',
-          type: 'integer',
+          type: 'string',
         },
       ],
       responses: {
@@ -117,6 +141,28 @@ const shopPath = {
         },
         500: {
           description: 'Внутренняя ошибка сервера',
+        },
+      },
+    },
+    delete: {
+      tags: ['shop'],
+      summary: 'Удалить продукт',
+      parameters: [
+        {
+          in: 'path',
+          name: 'id',
+          type: 'string',
+        },
+      ],
+      responses: {
+        200: {
+          description: 'Продукт успешно удалён',
+        },
+        500: {
+          description: 'Внутренняя ошибка сервера',
+        },
+        401: {
+          description: 'Не авторизирован',
         },
       },
     },

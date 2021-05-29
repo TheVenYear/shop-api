@@ -5,7 +5,7 @@ const whitelist = [
   'https://glendi123.github.io',
   config.NODE_ENV === 'production'
     ? config.HOST
-    : `http://localhost:8000:${config.PORT}`,
+    : `http://localhost:${config.PORT}`,
 ];
 
 const corsSettings = {

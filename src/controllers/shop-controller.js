@@ -6,12 +6,22 @@ import shopService from '../services/shop-service';
 import Rubric from '../models/rubric';
 import HttpException from '../utils/http-exception';
 import Spec from '../models/spec';
+import yadiskService from '../services/yadisk-service';
 
 const shopController = {
   addProduct: async (req, res, next) => {
     const { rubric, ...body } = req.body;
+    let images = [];
+    if (req.files?.images && req.files.images.length > 0) {
+      images = await Promise.all(
+        req.files.images.map(async (image, index) =>
+          yadiskService.upload({ ...image, name: `${index}-${image.name}` })
+        )
+      );
+    }
     const product = new Product({
       ...body,
+      images,
       rubric: isValidObjectId(rubric) ? rubric : null,
     });
     try {
@@ -41,6 +51,27 @@ const shopController = {
       return next(error);
     }
   },
+  removeRubric: async (req, res, next) => {
+    const rubric = await Rubric.findById(req.params.rubric);
+
+    if (!rubric) {
+      return next(new HttpException({ rubric: 'Категория не найдена' }));
+    }
+
+    if (rubric.image) {
+      await yadiskService.remove(rubric.image);
+    }
+
+    const products = await Product.find({ rubric: rubric._id });
+    await Promise.all(
+      products.map(async (product) => {
+        await product.delete();
+      })
+    );
+    await rubric.delete();
+
+    return res.sendStatus(200);
+  },
   getProducts: async (req, res, next) => {
     try {
       if (req.params.id) {
@@ -49,8 +80,7 @@ const shopController = {
       }
       console.log(req.query.rubricId);
       const products = await Product.find(
-        req.query.rubricId ? { rubric: req.query.rubricId } : {},
-        'name price shortDescription images'
+        req.query.rubricId ? { rubric: req.query.rubricId } : {}
       );
       return res.send({ data: products, errors: null });
     } catch (error) {
@@ -108,6 +138,22 @@ const shopController = {
       );
     }
     return res.send({ data: product.specs, errors: null });
+  },
+  removeProduct: async (req, res, next) => {
+    try {
+      const product = await Product.findById(req.params.product);
+      if (product.images?.length) {
+        Promise.all(
+          product.images.map(async (image) => yadiskService.remove(image))
+        );
+      }
+
+      await product.delete();
+
+      return res.sendStatus(200);
+    } catch {
+      return next(new HttpException({ product: 'Не удалось найти продукт' }));
+    }
   },
 };
 
