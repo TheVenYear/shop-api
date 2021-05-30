@@ -13,7 +13,7 @@ const basePath = '/api/media/';
 
 const yadiskService = {
   upload: async (file) => {
-    const fileName = Date.now() + file.name;
+    const fileName = Date.now() + Math.random().toString(36).substring(7);
     await instance.put(fileName, file.data);
     return basePath + fileName;
   },

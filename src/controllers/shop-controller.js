@@ -14,9 +14,7 @@ const shopController = {
     let images = [];
     if (req.files?.images && req.files.images.length > 0) {
       images = await Promise.all(
-        req.files.images.map(async (image, index) =>
-          yadiskService.upload({ ...image, name: `${index}-${image.name}` })
-        )
+        req.files.images.map(async (image) => yadiskService.upload(image))
       );
     }
     const product = new Product({
