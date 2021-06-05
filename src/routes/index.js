@@ -3,6 +3,7 @@ import { Router } from 'express';
 import authRouter from './auth-router';
 import shopRouter from './shop-router';
 import mediaRouter from './media-router';
+import emailRouter from './email-router';
 
 const routes = Router();
 
@@ -18,6 +19,10 @@ const routers = [
   {
     path: '/media',
     router: mediaRouter,
+  },
+  {
+    path: '/email',
+    router: emailRouter,
   },
 ];
 

@@ -11,6 +11,10 @@ const config = cleanEnv(process.env, {
   YANDEX_KEY: str(),
   NODE_ENV: str({ default: 'development' }),
   HOST: str({ default: 'some_url' }),
+  EMAIL_PORT: num({ default: 465 }),
+  EMAIL_ADDRESS: str(),
+  EMAIL_PASSWORD: str(),
+  EMAIL_HOST: str(),
 });
 
 export default config;

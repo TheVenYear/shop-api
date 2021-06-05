@@ -1,5 +1,6 @@
 import config from '..';
 import authPath from './auth-path';
+import emailPath from './email-path';
 import productsPath from './shop-path';
 
 const swagger = {
@@ -27,6 +28,10 @@ const swagger = {
       name: 'shop',
       description: 'Всё, что связано с магазином',
     },
+    {
+      name: 'email',
+      description: 'Отправка email',
+    },
   ],
   components: {
     securitySchemes: {
@@ -40,6 +45,7 @@ const swagger = {
   paths: {
     ...authPath,
     ...productsPath,
+    ...emailPath,
   },
 };
 
