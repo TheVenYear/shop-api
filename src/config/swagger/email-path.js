@@ -10,8 +10,20 @@ const emailPath = {
             schema: {
               type: 'object',
               properties: {
+                name: {
+                  type: 'string',
+                  required: true,
+                },
+                phone: {
+                  type: 'string',
+                  required: true,
+                },
+                email: {
+                  type: 'string',
+                },
                 products: {
                   type: 'array',
+                  required: true,
                   items: {
                     type: 'string',
                   },
