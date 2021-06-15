@@ -8,7 +8,7 @@ const emailValidation = {
     body('phone').exists().notEmpty().isString().optional({ checkFalsy: true }),
     body('name').exists().notEmpty().isString(),
     body('subject').exists().notEmpty().optional({ checkFalsy: true }),
-    body('description').exists().notEmpty.optional({ checkFalsy: true }),
+    body('description').exists().notEmpty().optional({ checkFalsy: true }),
     body('email').isEmail().optional({ checkFalsy: true }),
   ],
 };
