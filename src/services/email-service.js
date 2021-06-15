@@ -2,7 +2,9 @@ import transporter from '../config/transporter';
 
 const emailService = {
   send: async (data) => {
-    let text = `Имя: ${data.name}\nТелефон: ${data.phone}\nEmail: ${
+    let text = `Тема обращения: ${data.subject || 'нет'}\nОписание: ${
+      data.description || 'нет'
+    }\nИмя: ${data.name}\nТелефон: ${data.phone}\nEmail: ${
       data.email || 'нет'
     }\nСписок продуктов:\n`;
     data.products.forEach((product, index) => {
